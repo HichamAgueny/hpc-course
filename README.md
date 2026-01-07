@@ -14,11 +14,6 @@ This repo is deliberately structured so that each practical topic lives in its o
    - `nvidia‑smi` cheat‑sheet  
    - Querying Lustre filesystem info  
    - GPU‑aware vs non‑aware MPI bandwidth demo  
-6. [Assessments & Lab Manuals](#assessments--lab-manuals)  
-7. [Running the Full Environment (Docker / Conda)](#running-the-full-environment)  
-8. [Contributing & Issues](#contributing--issues)  
-9. [License](#license)  
-
 ---  
 
 ## Course Overview
