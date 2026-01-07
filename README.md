@@ -4,6 +4,7 @@ This repo is deliberately structured so that each practical topic lives in its o
 ---  
 
 ## 📚  Table of Contents
+0. [SSH Setup to Olivia HPC cluster](#ssh-setup-to-olivia-hpc-cluster)
 1. [Course Overview](#course-overview)  
 2. [Repository Layout](#repository-layout)  
 3. [Prerequisites & Setup](#prerequisites--setup)  
@@ -29,8 +30,26 @@ Students will learn to:
 All material is provided as **self‑contained examples** that can be explored on a single workstation or on an actual cluster.
 
 ---  
+## SSH Setup to Olivia HPC cluster
+```
+ssh username@olivia.sigma2.no
 
-## Repository Layout
+Out:(hicham@login.olivia.sigma2.no) One-time password (OATH) for `hicham': 
+
+Out:(hicham@login.olivia.sigma2.no) Password:
+```
+```
+mkdir /cluster/work/projects/nn14000k/$USER
+cd /cluster/work/projects/nn14000k/$USER
+
+```
+```
+git clone https://github.com/HichamAgueny/hpc-course.git
+
+cd hpc-course
+```
+
+# Repository Layout
 ```
 hpc-course/
 │
