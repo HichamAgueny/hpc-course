@@ -1,21 +1,24 @@
 #!/bin/bash
-# ---------------------------------------------------------------
-# nvidia-smi cheatsheet for HPC class
-# ---------------------------------------------------------------
-# 1. Show all GPUs
-nvidia-smi 
+# -------------------------------------------------
+#  GPU inspection script – ready to paste & run
+# -------------------------------------------------
 
-# 1. Show only GPU 0, 1 and 2 with their names
+echo "=== 1️⃣  ALL GPUs ==="
+nvidia-smi
+
+echo -e "\n=== 2️⃣  GPU NAMES for GPUs 0‑2 ==="
 nvidia-smi -i 0,1,2 --query-gpu=name --format=csv,noheader
 
-# 2. Show memory usage, temperature & power
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw --format=csv
+echo -e "\n=== 3️⃣  MEM / TEMP / POWER (CSV) ==="
+nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
+           --format=csv,noheader
 
-# 3. Export a CSV dump that can be plotted later
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw --format=csv > gpu_stats.csv
+echo -e "\n=== 4️⃣  Export CSV dump to gpu_stats.csv ==="
+nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
+           --format=csv,noheader > gpu_stats.csv
+echo "   → CSV file created: $(pwd)/gpu_stats.csv"
 
-# 4. Find the GPU topology (NVLink vs PCIe)
+echo -e "\n=== 5️⃣  GPU TOPOLOGY ==="
 nvidia-smi topo -m
-
 
 
