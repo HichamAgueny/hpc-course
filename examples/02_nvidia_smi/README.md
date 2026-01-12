@@ -16,16 +16,20 @@ Then paste the commands below inside that shell.
 # 1. All GPUs
 nvidia-smi
 
-# 2. Names of GPUs 0,1,2 (CSV, no header)
-nvidia-smi -i 0,1,2 --query-gpu=name --format=csv,noheader
+# 2. Names of GPUs 
+nvidia-smi --query-gpu=name --format=csv
+
+or for a specific GPU ID
+nvidia-smi -i 0,1 --query-gpu=name --format=csv
 
 # 3. Memory / Temperature / Power (CSV)
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader
+nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv
+
+# 4. Execute the ´nvidia‑smi´ query 10 times, once every 2 seconds.
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done
 
 # 4. Export to CSV for later plotting
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader > gpu_stats.csv
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done > gpu-stats.csv
 
 # 5. GPU interconnect topology
 nvidia-smi topo -m
@@ -64,8 +68,8 @@ nvidia-smi
 ### 2.2 Show **only GPUs 0, 1 and 2** and print just their **names**  
 
 ```bash
-# List GPUs 0‑2 and print a CSV column `name` (no header)
-nvidia-smi -i 0,1,2 --query-gpu=name --format=csv,noheader
+# List GPUs 0‑2 and print a CSV column `name` 
+nvidia-smi -i 0,1,2 --query-gpu=name --format=csv
 ```
 
 *Sample output*  
@@ -76,7 +80,6 @@ A100-SXM4
 ```
 
 > `-i` selects the GPU indices you want to query.  
-> `--format=csv,noheader` removes the header line and uses commas as separators – perfect for downstream scripting.
 
 ---  
 
@@ -84,8 +87,7 @@ A100-SXM4
 
 ```bash
 # CSV with four fields: used memory, total memory, temperature, power draw
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader
+nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv
 ```
 
 *Sample output*  
@@ -103,13 +105,19 @@ nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
 | `power.draw`    | Power consumption in **Watts** |
 
 ---  
+### 2.4 Execute the ´nvidia‑smi´ query 10 times, once every 2 seconds.
+```bash
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done
+```
 
-### 2.4 Export the above data to a **CSV file** for later plotting  
+*Sample output*  
+
+---
+### 2.5 Export the above data to a **CSV file** for later plotting  
 
 ```bash
 # One‑shot dump → ./gpu_stats.csv
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader > gpu_stats.csv
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done > gpu-stats.csv
 ```
 
 *File `gpu_stats.csv`* (example)
@@ -118,12 +126,9 @@ nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
 1234,15109,67,13
 567,15109,31,5
 ```
-
-> Keep the file, load it into Python/R/Matlab, and plot memory usage over time, temperature trends, etc.
-
 ---  
 
-### 2.5 (Bonus) Examine the **GPU topology** – how GPUs are linked  
+### 2.6 (Bonus) Examine the **GPU topology** – how GPUs are linked  
 
 ```bash
 nvidia-smi topo -m
@@ -171,15 +176,13 @@ echo "=== 1️⃣  ALL GPUs ==="
 nvidia-smi
 
 echo -e "\n=== 2️⃣  GPU NAMES for GPUs 0‑2 ==="
-nvidia-smi -i 0,1,2 --query-gpu=name --format=csv,noheader
+nvidia-smi -i 0,1,2 --query-gpu=name --format=csv
 
 echo -e "\n=== 3️⃣  MEM / TEMP / POWER (CSV) ==="
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader
+nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done
 
 echo -e "\n=== 4️⃣  Export CSV dump to gpu_stats.csv ==="
-nvidia-smi --query-gpu=memory.used,memory.total,temperature.gpu,power.draw \
-           --format=csv,noheader > gpu_stats.csv
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done > gpu-stats.csv
 echo "   → CSV file created: $(pwd)/gpu_stats.csv"
 
 echo -e "\n=== 5️⃣  GPU TOPOLOGY ==="
