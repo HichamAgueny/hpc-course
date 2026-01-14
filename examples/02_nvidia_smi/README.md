@@ -48,19 +48,38 @@ nvidia-smi
 
 ```
 +-----------------------------------------------------------------------------+
-| NVIDIA-SMI 525.85.12   Driver Version: 525.85.12   CUDA Version: 12.0     |
+| NVIDIA-SMI 565.57.01    Driver Version: 565.57.01    CUDA Version: 12.7     |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap| Memory-Usage | GPU-Util  Compute M. |
-|                               |         |               |
-+-----------------------------------------------------------------------------+
-| 0    Tesla T4           Off  | 00000000:3B:00.0 Off | 0%   |
-| 30C    P0    15W / 70W |   1234MiB / 15109MiB |   12%      Default |
-|                               |         |               |
-+-----------------------------------------------------------------------------+
-| 1    Tesla T4           Off  | 00000000:3B:00.1 Off | 0%   |
-| 31C    P0    12W / 70W |   567MiB / 15109MiB |   0%      Default |
-+-----------------------------------------------------------------------------+
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  NVIDIA GH200 120GB  On   | 00000009:01:00.0 Off |                    0 |
+| N/A   27C    P0    159W / 900W|  16341MiB / 97871MiB |      0%   E. Process |
+|                               |                      |          Disabled    |
++-------------------------------+----------------------+----------------------+
+|   1  NVIDIA GH200 120GB  On   | 00000019:01:00.0 Off |                    0 |
+| N/A   27C    P0    137W / 900W|  14417MiB / 97871MiB |      0%   E. Process |
+|                               |                      |          Disabled    |
++-------------------------------+----------------------+----------------------+
+|   2  NVIDIA GH200 120GB  On   | 00000029:01:00.0 Off |                    0 |
+| N/A   27C    P0    144W / 900W|    563MiB / 97871MiB |      0%   E. Process |
+|                               |                      |          Disabled    |
++-------------------------------+----------------------+----------------------+
+|   3  NVIDIA GH200 120GB  On   | 00000039:01:00.0 Off |                    0 |
+| N/A   23C    P0     78W / 900W|      1MiB / 97871MiB |      0%   E. Process |
+|                               |                      |          Disabled    |
++-------------------------------+----------------------+----------------------+
+
++-------------------------------------------------------------------------------------+
+| Processes:                                                                          |
+|  GPU   GI   CI        PID   Type   Process name                         GPU Memory  |
+|        ID   ID                                                            Usage     |
+|=====================================================================================|
+|    0   N/A  N/A    200099      C   ...iki/master_thesis/hf_env/bin/python  16332MiB |
+|    1   N/A  N/A    200111      C   ...iki/master_thesis/hf_env/bin/python  14408MiB |
+|    2   N/A  N/A   2001214      C   ...ro-benchmarks/mpi/pt2pt/osu_latency    554MiB |
++-------------------------------------------------------------------------------------+
 ```
 
 ---  
@@ -71,12 +90,12 @@ nvidia-smi
 # List GPUs 0‑2 and print a CSV column `name` 
 nvidia-smi -i 0,1,2 --query-gpu=name --format=csv
 ```
-
-*Sample output*  
-
+ 
+**NVIDIA GPU Output**
 ```
-GH200,
-A100-SXM4
+NVIDIA GH200 120GB
+NVIDIA GH200 120GB
+NVIDIA GH200 120GB
 ```
 
 > `-i` selects the GPU indices you want to query.  
@@ -93,16 +112,12 @@ nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperatur
 *Sample output*  
 
 ```
-1234, 15109, 67, 13
-567,  15109, 31, 5
+| Index | Utilization (%) | Memory Used (MiB) | Memory Total (MiB) | Temperature (°C) | Power Draw (W) |
+|-------|-----------------|-------------------|--------------------|------------------|----------------|
+| 0     | 100             | 90680             | 97871              | 42               | 516.88         |
+| 1     | 100             | 90679             | 97871              | 37               | 338.83         |
+| 2     | 100             | 90683             | 97871              | 37               | 317.68         |
 ```
-
-| Column | Meaning |
-|--------|---------|
-| `memory.used`   | Used memory in **MiB** |
-| `memory.total`  | Total memory in **MiB** |
-| `temperature.gpu` | Temperature in **°C** |
-| `power.draw`    | Power consumption in **Watts** |
 
 ---  
 ### 2.4 Execute the ´nvidia‑smi´ query 10 times, once every 2 seconds.
@@ -111,20 +126,36 @@ for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,me
 ```
 
 *Sample output*  
-
+```
+| Index | Utilization (%) | Memory Used (MiB) | Memory Total (MiB) | Temperature (°C) | Power Draw (W) |
+|-------|-----------------|-------------------|--------------------|------------------|----------------|
+| 0     | 100             | 90680             | 97871              | 42               | 487.33         |
+| 1     | 100             | 90678             | 97871              | 44               | 532.15         |
+| 2     | 100             | 90677             | 97871              | 47               | 542.57         |
+| 3     | 100             | 90683             | 97871              | 44               | 534.33         |
+|       |                 |                   |                    |                  |                |
+| 0     | 43              | 90680             | 97871              | 39               | 289.91         |
+| 1     | 30              | 90678             | 97871              | 36               | 245.72         |
+| 2     | 63              | 90677             | 97871              | 40               | 299.64         |
+| 3     | 39              | 90683             | 97871              | 36               | 273.89         |
+|       |                 |                   |                    |                  |                |
+| 0     | 100             | 90680             | 97871              | —                | 544.20         |
+| 1     | 100             | 90678             | 97871              | 44               | 513.16         |
+| 2     | 100             | 90677             | 97871              | 45               | 542.77         |
+| 3     | 100             | 90683             | 97871              | 44               | 532.87         |
+```
 ---
 ### 2.5 Export the above data to a **CSV file** for later plotting  
 
 ```bash
 # One‑shot dump → ./gpu_stats.csv
-for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done > gpu-stats.csv
+for i in {1..10}; do nvidia-smi --query-gpu=index,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv; sleep 2; done > gpu_stats.csv
 ```
 
-*File `gpu_stats.csv`* (example)
+*File `gpu_stats.csv`*, which can be viewed using e.g. the command `vi`
 
 ```
-1234,15109,67,13
-567,15109,31,5
+vi gpu_stats.csv
 ```
 ---  
 
@@ -139,25 +170,34 @@ nvidia-smi topo -m
 The command prints a **matrix** that maps each GPU to the interconnect used to talk to every other GPU.  
 
 ```
-        GPU0    GPU1    GPU2    GPU3        CPU Affinity
-GPU0    X        PHB     PHB     PHB      CPU Affinity
-GPU1    PHB      X       PHB     PHB      CPU Affinity
-GPU2    PHB      PHB     X       NV1      CPU Affinity
-GPU3    PHB      PHB     NV1     X        CPU Affinity
+ | GPU   | GPU0 | GPU1 | GPU2 | GPU3 | CPU Affinity | NUMA Affinity | GPU NUMA ID |
+|-------|------|------|------|------|--------------|---------------|-------------|
+| GPU0  | X    | NV6  | NV6  | NV6  | 0-71         | 0             | 4           |
+| GPU1  | NV6  | X    | NV6  | NV6  | 72-143       | 1             | 12          |
+| GPU2  | NV6  | NV6  | X    | NV6  | 144-215      | 2             | 20          |
+| GPU3  | NV6  | NV6  | NV6  | X    | 216-287      | 3             | 28          |
+
+---
+
+**Legend:**
+
+- **X**     = Self  
+- **NV6**   = Connection traversing a bonded set of # NVLinks
 ```
+### Interpretation of Affinity and NUMA Information
 
-| Symbol | Description |
-|--------|-------------|
-| **`X`** | The GPU compares to itself (always `X`). |
-| **`PHB`** | *Peer‑to‑Peer Host‑Bridge* – typical **PCIe** traffic between GPUs on the same node. |
-| **`NV1`** | *NVLink* (or NVSwitch) – a high‑speed, non‑PCIe fabric. If you see `NV1` or `NV2` it means those two GPUs are connected via NVLink. Anything else (e.g., `SYS`, `SLI`) indicates a different bus or a non‑supported path. |
-| **`CPU Affinity`** column shows which CPU sockets each GPU is attached to (useful for NUMA‑aware jobs). |
+- **CPU Affinity**  
+  Indicates the range of CPU cores that are **logically closest** (in terms of memory access latency and bandwidth) to each GPU.  
+  For example, `0–71` means that GPU0 is optimally paired with CPU cores 0 through 71. Binding compute tasks or processes to these cores can reduce communication overhead and improve performance.
 
-**Interpretation**  
+- **NUMA Affinity**  
+  Shows the **Non-Uniform Memory Access (NUMA) node** associated with each GPU. Modern multi-socket systems split memory and CPUs into NUMA nodes; accessing memory from a local NUMA node is faster than from a remote one.  
+  A GPU with `NUMA Affinity = 0` should ideally use memory allocated on NUMA node 0 to minimize latency.
 
-* If **all entries** (except the diagonal `X`) are `PHB`, every GPU talks to every other GPU over **PCIe** (the common default).  
-* If you see **`NV1`** or **`NV2`** between specific GPUs, those pairs are linked via **NVLink**, which offers far higher bandwidth and lower latency.  
-* The presence of **different symbols** tells you that the topology is heterogeneous – some GPUs may be on PCIe while others are on NVLink.
+- **GPU NUMA ID**  
+  Represents the **internal NUMA identifier** used by the GPU driver or system firmware to map the GPU to the system’s NUMA topology. GPU NUMA ID (like 4, 12, 20, 28) usually shows how the GPU is numbered in the system’s hardware layout. These IDs may not match CPU NUMA node numbers but are used internally for topology-aware scheduling (e.g., by NVIDIA’s `nvidia-smi topo -m`).
+
+> 💡 **Best Practice**: For optimal performance in multi-GPU systems, pin each GPU’s workload to its associated CPU core range (**CPU Affinity**) and allocate memory on its corresponding **NUMA node** to avoid costly cross-node memory traffic.
 
 ---  
 
