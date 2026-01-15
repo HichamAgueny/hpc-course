@@ -82,11 +82,5 @@ Follow instruction in the README file`
 
 ---  
 
-## License
-The code in this repository is released under the **MIT License** (see the `LICENSE` file).  
-The PDFs and other non‑code assets are covered by the same license unless otherwise noted.
-
----  
-
 ## 📬  Contact
 * **Instructor:** Dr. Hicham Agueny – hicham.agueny@uib.no  
