@@ -57,7 +57,7 @@ lfs df -i
 
 ---
 
-## 4. Quick Reference Table
+## 3. Quick Reference Table
 
 | Goal | Command |
 | --- | --- |
@@ -66,9 +66,38 @@ lfs df -i
 | **File Count / Inodes** | `lfs df -i` |
 | **Pretty Print Table** | `df -H -t lustre | awk ...` (see section 1) |
 
-## 3. Understanding the Units
+## 4. Understanding the Units
 
 * **-h (Binary)**: Powers of 1024.  bytes.
 * **-H (SI)**: Powers of 1000.  bytes.
 
 *Note: `lfs` defaults to `-h` (binary), whereas standard `df` can toggle between `-h` and `-H`.*
+
+Here is a short section describing the script, formatted to fit perfectly into your `README.md`.
+
+---
+
+## 5. Automated Monitoring Script
+
+To simplify the usage of these commands, we provide a Bash script (`lustre_monitor.sh`) that bundles them into an easy-to-use menu.
+
+**Features:**
+
+* **Clean Output:** Automatically formats `df` output to remove raw device IDs.
+* **Quick Summary:** Filters out the noise of hundreds of OST targets to show just the total capacity.
+* **Inode Check:** Easily switches to file count view to check for quota limits.
+
+**Setup and Usage:**
+
+1. **Save the script** as `lustre_monitor.sh`.
+2. **Make it executable:**
+```bash
+chmod +x lustre_monitor.sh
+
+```
+
+3. **Run the script:**
+```bash
+./lustre_monitor.sh
+
+```
