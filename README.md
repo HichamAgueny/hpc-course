@@ -89,4 +89,4 @@ The PDFs and other non‑code assets are covered by the same license unless othe
 ---  
 
 ## 📬  Contact
-* **Instructor:** Dr. Hicham AGueny – hicham.agueny@uib.no  
+* **Instructor:** Dr. Hicham Agueny – hicham.agueny@uib.no  
