@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=gpuaware_olivia_IPC_enabled
+#SBATCH --job-name=slurm_olivia_IPC_enabled
 #SBATCH --account=nn14000k
 #SBATCH --time=00:10:00
 #SBATCH --partition=accel
@@ -8,7 +8,7 @@
 #SBATCH --gpus=2
 #SBATCH --gpus-per-node=2
 #SBATCH --mem-per-gpu=20G #CPU memory that should be allocated per GPU
-#SBATCH -o %x-%j.out
+#SBATCH -o slurm/%x-%j.out
 ##SBATCH --exclusive
 
 #Load the Olivia software stack
