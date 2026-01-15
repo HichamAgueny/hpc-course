@@ -1,0 +1,1 @@
+salloc -A nn14000k -t 00:10:00 -p accel -N 1 --gpus 1 --gpus-per-node 1 --ntasks-per-node 1 --mem-per-cpu 8G
