@@ -5,7 +5,7 @@
 ### 1.0 Launch an interactive session
 To run the `nvidia-smi` commands on a GPU‑enabled node, you need to launch an interactive shell with Slurm first:  
 ```bash
-srun -A nn14000k -p accel --nodes=1 --gpus=1 --ntasks-per-node=1  --cpus-per-task 1 --mem=1G --time=00:15:00 --pty bash -i
+srun -A nn14000k -p accel --nodes=1 --gpus=1 --ntasks-per-node=1  --cpus-per-task 1 --mem=1G --time=00:15:00 --reservation=geilo_winter_school_gpu --pty bash -i
 ```  
 Then paste the commands below inside that shell.
 
