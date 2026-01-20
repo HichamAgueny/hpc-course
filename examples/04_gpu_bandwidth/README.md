@@ -18,6 +18,8 @@ Both the source code **has already been compiled** for the Olivia compute nodes,
 
 Your only task is to **submit** the appropriate script with `sbatch` and compare the printed bandwidth results.
 
+`sbatch script_gpuaware_IPC_enabled_Olivia.sh`
+`sbatch script_gpuaware_IPC_disabled_Olivia.sh`
 ---  
 
 ## 📂 Folder layout  
