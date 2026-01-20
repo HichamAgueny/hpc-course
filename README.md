@@ -28,7 +28,7 @@ cd /cluster/work/projects/nn14000k/$USER
 ```
 ```bash
 # Clone the repo first
-git clone https://github.com/your-org/hpc-course.git
+git clone https://github.com/HichamAgueny/hpc-course.git
 cd hpc-course
 
 ```
